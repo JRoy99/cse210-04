@@ -64,32 +64,34 @@ class Director:
         max_y = self._video_service.get_height()
         robot.move_next(max_x, max_y)
 
+        #check and update high score
         with open(DATA_PATH,"r") as f:
             high_score = int(f.readline())
         if robot.get_score() > high_score:
             with open(DATA_PATH,"w") as f:
-                f.write(str(robot.get_score()))
-        #banner.set_text(f"MAX X: {max_x} MAX Y: {max_y}")    
-        banner.set_text(f"SCORE: {robot.get_score()} HIGH SCORE: {high_score}")     
-        #banner.set_text(f"X: {robot.get_position().get_x()} Y: {robot.get_position().get_y()}")     
+                f.write(str(robot.get_score()))  
+        banner.set_text(f"SCORE: {robot.get_score()} HIGH SCORE: {high_score}")      
         
+        #loop through objects
         for object in objects:
             try:
-                if (object.get_position().get_x() == robot.get_position().get_x() and 
+                #if object is sufficiently close to robot, delete object and change score
+                if (abs(object.get_position().get_x() - robot.get_position().get_x()) <= 15 and 
                 object.get_position().get_y() >= robot.get_position().get_y() - 10):
                     robot.set_score(robot.get_score() + object.get_score())
                     cast.remove_actor("objects", object)
             except:
                 pass
             try:
+                #delete objects as they exit the screen
                 if object.get_position().get_y() >= max_y - 10:
                     cast.remove_actor("objects", object)
                 else:
                     object.move_next(max_x, max_y)   
             except:
                 pass      
-        
-        __main__.spawn_objects(cast, len(objects))
+        #spawn new objects up to the max number allowed on the screen
+        __main__.spawn_objects(cast, len(objects), robot.get_score())
 
         cast.add_actor("objects", object)
         

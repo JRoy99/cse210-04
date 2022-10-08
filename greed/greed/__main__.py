@@ -14,7 +14,7 @@ from game.shared.color import Color
 from game.shared.point import Point
 
 
-FRAME_RATE = 15
+FRAME_RATE = 30
 MAX_X = 1200
 MAX_Y = 600
 CELL_SIZE = 40
@@ -26,7 +26,7 @@ CAPTION = "Greed"
 WHITE = Color(255, 255, 255)
 MAX_OBJECTS = 50 # Maximum objects on screen
 
-def spawn_objects(cast, current_objects):
+def spawn_objects(cast, current_objects, curr_score):
 # create the objects
 
 
@@ -51,7 +51,7 @@ def spawn_objects(cast, current_objects):
         object.set_font_size(FONT_SIZE)
         object.set_color(color)
         object.set_position(position)
-        object.set_velocity(Point(0, abs(object.get_score())*3))
+        object.set_velocity(Point(0, abs(object.get_score())))
 
 
         cast.add_actor("objects", object)
@@ -81,7 +81,7 @@ def main():
     robot.set_position(position)
     cast.add_actor("robots", robot)
     
-    spawn_objects(cast, 0)
+    spawn_objects(cast, 0, 0)
     
     # start the game
     keyboard_service = KeyboardService(CELL_SIZE)
