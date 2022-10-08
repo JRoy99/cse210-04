@@ -67,16 +67,25 @@ class Director:
         if robot.get_score() > high_score:
             with open(DATA_PATH,"w") as f:
                 f.write(str(robot.get_score()))
-
+        #banner.set_text(f"MAX X: {max_x} MAX Y: {max_y}")    
         banner.set_text(f"SCORE: {robot.get_score()} HIGH SCORE: {high_score}")     
         #banner.set_text(f"X: {robot.get_position().get_x()} Y: {robot.get_position().get_y()}")     
         
         for object in objects:
-            if robot.get_position().equals(object.get_position()):
-                robot.set_score(robot.get_score() + object.get_score())
-            object.move_next(max_x, max_y)
-            if object.get_position().get_y() == max_y:
-                objects.remove(object)
+            try:
+                if (object.get_position().get_x() == robot.get_position().get_x() and 
+                object.get_position().get_y() >= robot.get_position().get_y() - 5):
+                    robot.set_score(robot.get_score() + object.get_score())
+                    cast.remove_actor("objects", object)
+            except:
+                pass
+            try:
+                if object.get_position().get_y() == max_y:
+                    cast.remove_actor("objects", object)
+                else:
+                    object.move_next(max_x, max_y+1)   
+            except:
+                pass             
 
         cast.add_actor("objects", object)
         
