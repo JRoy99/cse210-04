@@ -1,5 +1,7 @@
 import random
-import os
+import os, sys
+sys.path.append(os.path.abspath(os.path.join('..', '..', '..', '..', 'greed')))
+import __main__
 
 DATA_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/data/highscore.txt"
 
@@ -74,18 +76,20 @@ class Director:
         for object in objects:
             try:
                 if (object.get_position().get_x() == robot.get_position().get_x() and 
-                object.get_position().get_y() >= robot.get_position().get_y() - 5):
+                object.get_position().get_y() >= robot.get_position().get_y() - 10):
                     robot.set_score(robot.get_score() + object.get_score())
                     cast.remove_actor("objects", object)
             except:
                 pass
             try:
-                if object.get_position().get_y() == max_y:
+                if object.get_position().get_y() >= max_y - 10:
                     cast.remove_actor("objects", object)
                 else:
-                    object.move_next(max_x, max_y+1)   
+                    object.move_next(max_x, max_y)   
             except:
-                pass             
+                pass      
+        
+        __main__.spawn_objects(cast, len(objects))
 
         cast.add_actor("objects", object)
         

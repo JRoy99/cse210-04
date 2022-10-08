@@ -14,7 +14,7 @@ from game.shared.color import Color
 from game.shared.point import Point
 
 
-FRAME_RATE = 18
+FRAME_RATE = 15
 MAX_X = 1200
 MAX_Y = 600
 CELL_SIZE = 40
@@ -24,7 +24,7 @@ ROWS = 15
 CAPTION = "Greed"
 
 WHITE = Color(255, 255, 255)
-MAX_OBJECTS = 100 # Maximum objects on screen
+MAX_OBJECTS = 50 # Maximum objects on screen
 
 def spawn_objects(cast, current_objects):
 # create the objects
