@@ -42,11 +42,23 @@ def spawn_objects(cast, current_objects, curr_score):
         color = Color(r, g, b)
         
         object = Object()
-        object.set_text(random.choice(["*", "o"]))
+
+        #Weight object spawning using current score
+        gem_chance = 100 - curr_score / 10
+        rock_chance = curr_score
+        if gem_chance < 10:
+            gem_chance = 10
+            rock_chance = 90
+        elif rock_chance < 10:
+            rock_chance = 10
+            gem_chance = 90
+        object.set_text(''.join(random.choices(["*", "o"], weights = (gem_chance, rock_chance), k=1)))
+
+        #Set score values
         if object.get_text() == "*":            
-            object.set_score(random.randint(1, 3))
+            object.set_score(random.randint(1, 5))
         else:
-            object.set_score(random.randint(-3, -1))
+            object.set_score(random.randint(-5, -1))
 
         object.set_font_size(FONT_SIZE)
         object.set_color(color)
