@@ -1,3 +1,8 @@
+import random
+import os
+
+DATA_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/data/highscore.txt"
+
 class Director:
     """A person who directs the game. 
     
@@ -39,7 +44,7 @@ class Director:
         """
         robot = cast.get_first_actor("robots")
         velocity = self._keyboard_service.get_direction()
-        if not(velocity.get_y() == 0):
+        if (velocity.get_y() == 0):
             robot.set_velocity(velocity)        
 
     def _do_updates(self, cast):
@@ -56,16 +61,24 @@ class Director:
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         robot.move_next(max_x, max_y)
-        banner.set_text("SCORE: " + robot.get_score())     
+
+        with open(DATA_PATH,"r") as f:
+            high_score = int(f.readline())
+        if robot.get_score() > high_score:
+            with open(DATA_PATH,"w") as f:
+                f.write(str(robot.get_score()))
+
+        banner.set_text(f"SCORE: {robot.get_score()} HIGH SCORE: {high_score}")     
+        #banner.set_text(f"X: {robot.get_position().get_x()} Y: {robot.get_position().get_y()}")     
         
         for object in objects:
-            object.move_next(max_x, max_y)
             if robot.get_position().equals(object.get_position()):
                 robot.set_score(robot.get_score() + object.get_score())
+            object.move_next(max_x, max_y)
             if object.get_position().get_y() == max_y:
                 objects.remove(object)
 
-        
+        cast.add_actor("objects", object)
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.

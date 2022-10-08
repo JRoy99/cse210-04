@@ -22,9 +22,9 @@ FONT_SIZE = 15
 COLS = 60
 ROWS = 40
 CAPTION = "Greed"
-DATA_PATH = os.path.dirname(os.path.abspath(__file__)) + "/data/highscore.txt"
+
 WHITE = Color(255, 255, 255)
-DEFAULT_OBJECTS = 20 # Simulataneous objects on screen
+STARTING_OBJECTS = 50 # Starting objects on screen
 
 
 def main():
@@ -42,7 +42,7 @@ def main():
     
     # create the robot
     x = int(MAX_X / 2)
-    y = int(MAX_Y)
+    y = int(MAX_Y - CELL_SIZE)
     position = Point(x, y)
 
     robot = Actor()
@@ -53,9 +53,9 @@ def main():
     cast.add_actor("robots", robot)
     
     # create the objects
-    for n in range(DEFAULT_OBJECTS):
+    for n in range(STARTING_OBJECTS):
         x = random.randint(1, COLS - 1)
-        y = random.randint(1, ROWS/3)
+        y = random.randint(1, int(ROWS / 2))
         position = Point(x, y)
         position = position.scale(CELL_SIZE)
 
@@ -65,16 +65,16 @@ def main():
         color = Color(r, g, b)
         
         object = Object()
-        object.set_score(random.choice(-1, 1))
-        if object.get_score() > 1:            
-            object.set_text("*")
+        object.set_text(random.choice(["*", "o"]))
+        if object.get_text() == "*":            
+            object.set_score(1)
         else:
-            object.set_text("o")
+            object.set_score(-1)
 
         object.set_font_size(FONT_SIZE)
         object.set_color(color)
         object.set_position(position)
-        object.set_velocity(Point(0,-1))
+        object.set_velocity(Point(0,3))
 
 
         cast.add_actor("objects", object)
