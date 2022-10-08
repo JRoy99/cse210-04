@@ -1,4 +1,5 @@
 # Greed
+Gems are falling from the sky, but rocks are, too. Try and collect as many gems (*) as you can to boost your score, but watch out for the falling rocks (o) which will make you lose points. Some objects fall more quickly than others, and these are worth more points (though the rocks will take even more away!). As each object disappears into your waiting arms or below the edge of the screen, more will spawn at the top. The better you do, the more rocks and fewer gems will appear. Your punishment for greed or a challenge to gather more? That's for you to decide!
 
 ## Getting Started
 ---
